@@ -1,24 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
+
+import Editor from './Editor';
+
 import './App.css';
+
+const cloudConfig = {
+  tokenUrl: process.env.REACT_APP_CK_TOKEN_URL,
+  uploadUrl: process.env.REACT_APP_CK_UPLOAD_URL,
+  webSocketUrl: process.env.REACT_APP_CK_SOCKET_URL,
+  documentId: process.env.REACT_APP_CK_DOC_ID,
+};
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Editor configuration={cloudConfig} />
     </div>
   );
 }
