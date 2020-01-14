@@ -8,6 +8,7 @@ import Autoformat from '@ckeditor/ckeditor5-autoformat/src/autoformat';
 import BlockQuote from '@ckeditor/ckeditor5-block-quote/src/blockquote';
 import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
 import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
+import Comments from '@ckeditor/ckeditor5-comments/src/comments';
 import EasyImage from '@ckeditor/ckeditor5-easy-image/src/easyimage';
 import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
 import FontFamily from '@ckeditor/ckeditor5-font/src/fontfamily';
@@ -33,6 +34,7 @@ import RemoveFormat from '@ckeditor/ckeditor5-remove-format/src/removeformat';
 import Strikethrough from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
 import Table from '@ckeditor/ckeditor5-table/src/table';
 import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
+import TrackChanges from '@ckeditor/ckeditor5-track-changes/src/trackchanges';
 import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline';
 import UploadAdapter from '@ckeditor/ckeditor5-adapter-ckfinder/src/uploadadapter';
 
@@ -104,32 +106,23 @@ class Editor extends Component {
     // You need this state to render the <CKEditor /> component after the layout is ready.
     // <CKEditor /> needs HTMLElements of `Sidebar` and `PresenceList` plugins provided through
     // the `config` property and you have to ensure that both are already rendered.
-    isLayoutReady: false
+    isLayoutReady: false,
+    isThreadCreated: false,
   };
 
   sidebarElementRef = React.createRef();
   presenceListElementRef = React.createRef();
+  editorRef = React.createRef();
 
   componentDidMount() {
     // When the layout is ready you can switch the state and render the `<CKEditor />` component.
-    this.setState({ isLayoutReady: true } );
+    this.setState({isLayoutReady: true});
   }
 
   render() {
     return (
-      <div className="App">
-        { this.renderHeader() }
-
+      <div className="editor-wrapper">
         <main>
-          <div className="message">
-            <div className="centered">
-              <h2>CKEditor 5 React integration of classic editor with real-time collaboration</h2>
-              <p>
-                Open this sample in another browser tab to start real-time collaborative editing.
-              </p>
-            </div>
-          </div>
-
           <div className="centered">
             <div className="row-presence">
               <div ref={ this.presenceListElementRef } className="presence" />
@@ -137,8 +130,6 @@ class Editor extends Component {
             { this.renderEditor() }
           </div>
         </main>
-
-        { this.renderFooter() }
       </div>
     );
   }
@@ -195,6 +186,7 @@ class Editor extends Component {
                 BlockQuote,
                 Bold,
                 CKFinder,
+                Comments,
                 EasyImage,
                 Essentials,
                 FontFamily,
@@ -220,6 +212,7 @@ class Editor extends Component {
                 Strikethrough,
                 Table,
                 TableToolbar,
+                TrackChanges,
                 Underline,
                 UploadAdapter
               ],
@@ -286,7 +279,7 @@ class Editor extends Component {
             data={ initialData }
           />
        )}
-        <div ref={ this.sidebarElementRef } className="sidebar" />
+        <div ref={this.sidebarElementRef} className="sidebar" />
       </div>
     );
   }

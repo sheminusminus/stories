@@ -28,6 +28,34 @@
   color: #61dafb;
 }
 
+.row-editor {
+  display: flex;
+  flex-direction: column;
+}
+
+.ck-comment__content p {
+  text-align: left;
+}
+
+@media (min-width: 768px) {
+  .row-editor {
+    flex-direction: row;
+    position: relative;
+  }
+
+  .ck.ck-editor {
+    max-width: calc(100% - 300px);
+  }
+
+  .sidebar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 300px;
+    bottom:o;
+  }
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
