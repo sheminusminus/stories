@@ -25,6 +25,8 @@ const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 
+const { styles } = require( '@ckeditor/ckeditor5-dev-utils' );
+
 const postcssNormalize = require('postcss-normalize');
 
 const appPackageJson = require(paths.appPackageJson);
@@ -339,7 +341,7 @@ module.exports = function(webpackEnv) {
                 formatter: require.resolve('react-dev-utils/eslintFormatter'),
                 eslintPath: require.resolve('eslint'),
                 resolvePluginsRelativeTo: __dirname,
-                
+
               },
               loader: require.resolve('eslint-loader'),
             },
@@ -351,6 +353,30 @@ module.exports = function(webpackEnv) {
           // match the requirements. When no loader matches it will fall
           // back to the "file" loader at the end of the loader list.
           oneOf: [
+            {
+              test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
+              use: [ 'raw-loader' ]
+            },
+            {
+              test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
+              use: [
+                {
+                  loader: 'style-loader',
+                  options: {
+                    injectType: 'singletonStyleTag'
+                  }
+                },
+                {
+                  loader: 'postcss-loader',
+                  options: styles.getPostCssConfig( {
+                    themeImporter: {
+                      themePath: require.resolve( '@ckeditor/ckeditor5-theme-lark' )
+                    },
+                    minify: true
+                  } )
+                }
+              ]
+            },
             // "url" loader works like "file" loader except that it embeds assets
             // smaller than specified limit in bytes as data URLs to avoid requests.
             // A missing `test` is equivalent to a match.
@@ -372,7 +398,7 @@ module.exports = function(webpackEnv) {
                 customize: require.resolve(
                   'babel-preset-react-app/webpack-overrides'
                 ),
-                
+
                 plugins: [
                   [
                     require.resolve('babel-plugin-named-asset-import'),
@@ -414,7 +440,7 @@ module.exports = function(webpackEnv) {
                 cacheDirectory: true,
                 // See #6846 for context on why cacheCompression is disabled
                 cacheCompression: false,
-                
+
                 // Babel sourcemaps are needed for debugging into node_modules
                 // code.  Without the options below, debuggers like VSCode
                 // show incorrect code and set breakpoints on the wrong lines.
@@ -431,7 +457,10 @@ module.exports = function(webpackEnv) {
             // By default we support CSS Modules with the extension .module.css
             {
               test: cssRegex,
-              exclude: cssModuleRegex,
+              exclude: [
+                cssModuleRegex,
+                /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
+              ],
               use: getStyleLoaders({
                 importLoaders: 1,
                 sourceMap: isEnvProduction && shouldUseSourceMap,
@@ -446,6 +475,9 @@ module.exports = function(webpackEnv) {
             // using the extension .module.css
             {
               test: cssModuleRegex,
+              exclude: [
+                /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
+              ],
               use: getStyleLoaders({
                 importLoaders: 1,
                 sourceMap: isEnvProduction && shouldUseSourceMap,
@@ -499,7 +531,13 @@ module.exports = function(webpackEnv) {
               // its runtime that would otherwise be processed through "file" loader.
               // Also exclude `html` and `json` extensions so they get processed
               // by webpacks internal loaders.
-              exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
+              exclude: [
+                /\.(js|mjs|jsx|ts|tsx)$/,
+                /\.html$/,
+                /\.json$/,
+                /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
+                /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/
+              ],
               options: {
                 name: 'static/media/[name].[hash:8].[ext]',
               },
