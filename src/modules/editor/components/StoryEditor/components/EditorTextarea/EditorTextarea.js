@@ -7,15 +7,29 @@ const EditorTextarea = (props) => {
     isReadOnly,
     onChange,
     onKeyDown,
+    onKeyUp,
     placeholder,
     text,
   } = props;
 
+  const handleChange = onChange
+    ? (evt) => onChange(evt, index, text)
+    : undefined;
+
+  const handleKeyDown = onKeyDown
+    ? (evt) => onKeyDown(evt, index, text)
+    : undefined;
+
+  const handleKeyUp = onKeyUp
+    ? (evt) => onKeyUp(evt, index, text)
+    : undefined;
+
   return (
     <textarea
       autoFocus
-      onChange={(evt) => onChange(evt, index, text)}
-      onKeyDown={(evt) => onKeyDown(evt, index, text)}
+      onChange={handleChange}
+      onKeyDown={handleKeyDown}
+      onKeyUp={handleKeyUp}
       placeholder={placeholder}
       readOnly={isReadOnly}
       ref={innerRef}
