@@ -6,3 +6,5 @@ export const getParagraphs = (text) => {
 
   return paragraphs.map(p => p.replace(startMatch, '')).filter(p => !!p);
 };
+
+export const endsWith2xNewline = str => str.endsWith('\n\n');

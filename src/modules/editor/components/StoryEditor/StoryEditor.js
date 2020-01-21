@@ -1,21 +1,30 @@
 import React from 'react';
-import ContentEditable from 'react-contenteditable';
 
-import { FnUtils } from 'utils';
+import { EventUtils, FnUtils, StringUtils } from 'utils';
 
 const initialText = 'Start typing...';
 
-const StoryEditor = ({ activeParagraph, changeText, text }) => {
-  const textareaRef = React.useRef();
+const StoryEditor = ({ onChangeText, onRemoveParagraph, text }) => {
+  const [activeIndex, setActiveIndex] = React.useState(0);
   const [firstValueFilled, setFirstValueFilled] = React.useState(false);
+  const [needsFocus, setNeedsFocus] = React.useState(false);
+  const activeTextarea = React.useRef();
+
+  React.useEffect(() => {
+    if (needsFocus && activeTextarea.current) {
+      activeTextarea.current.focus();
+      setNeedsFocus(false);
+    }
+  }, [needsFocus, activeTextarea]);
 
   if (FnUtils.not(FnUtils.hasLen(text))) {
     return (
-      <ContentEditable
-        html={initialText}
+      <textarea
+        autoFocus
         onKeyDown={(evt) => {
-          changeText(0, evt.key);
+          onChangeText(0, evt.key);
         }}
+        placeholder={initialText}
       />
     );
   }
@@ -34,13 +43,30 @@ const StoryEditor = ({ activeParagraph, changeText, text }) => {
               return;
             }
 
-            if (value.endsWith('\n\n')) {
-              changeText(idx + 1, '')
+            if (StringUtils.endsWith2xNewline(value)) {
+              const nextParagraph = idx + 1;
+              setActiveIndex(nextParagraph);
+              onChangeText(idx, value.split('\n\n')[0]);
+              onChangeText(nextParagraph, '');
             } else {
-              changeText(idx, evt.target.value)
+              onChangeText(idx, evt.target.value)
             }
           }}
-          ref={textareaRef}
+          onKeyDown={(evt) => {
+            if (EventUtils.isPressedBackspace(evt) && !paragraph) {
+              onRemoveParagraph(idx);
+
+              const lastParagraph = idx - 1;
+
+              if (lastParagraph >= 0) {
+                setActiveIndex(lastParagraph);
+                setNeedsFocus(true);
+              } else if (FnUtils.isLen(text, 1)) {
+                setFirstValueFilled(false);
+              }
+            }
+          }}
+          ref={activeIndex === idx ? activeTextarea : undefined}
           value={paragraph}
         />
       ))}

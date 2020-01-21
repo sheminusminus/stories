@@ -11,7 +11,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = {
-  changeText: actions.changeText,
+  onChangeText: actions.changeText,
+  onRemoveParagraph: actions.removeParagraph,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoryEditor);

@@ -7,3 +7,5 @@ export const callIf = (condition, fn, ...args) => {
 };
 
 export const hasLen = arr => arr.length;
+
+export const isLen = (arr, len) => arr.length === len;

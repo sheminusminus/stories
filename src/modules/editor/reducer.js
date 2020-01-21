@@ -17,6 +17,12 @@ export const reducer = (state = initialState, action = {}) => {
         text: [...state.text.slice(0, payload.index), payload.text, ...state.text.slice(payload.index + 1)],
       };
 
+    case constants.REMOVE_PARAGRAPH:
+      return {
+        ...state,
+        text: [...state.text.slice(0, payload.index), ...state.text.slice(payload.index + 1)],
+      };
+
     default:
       return state;
   }
