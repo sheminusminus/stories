@@ -22,9 +22,13 @@ const StoryEditor = ({ onChangeText, onRemoveParagraph, text }) => {
       <textarea
         autoFocus
         onKeyDown={(evt) => {
-          onChangeText(0, evt.key);
+          if (EventUtils.isPressedLetter(evt)) {
+            onChangeText(0, evt.key);
+          }
         }}
         placeholder={initialText}
+        readOnly
+        value=""
       />
     );
   }
