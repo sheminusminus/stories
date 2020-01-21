@@ -3,7 +3,6 @@ import CKEditor from '@ckeditor/ckeditor5-react';
 import { navigate } from '@reach/router';
 
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
-
 import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
 import Autoformat from '@ckeditor/ckeditor5-autoformat/src/autoformat';
 import BlockQuote from '@ckeditor/ckeditor5-block-quote/src/blockquote';
@@ -25,6 +24,8 @@ import Strikethrough from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
 import TrackChanges from '@ckeditor/ckeditor5-track-changes/src/trackchanges';
 import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline';
 import UploadAdapter from '@ckeditor/ckeditor5-adapter-ckfinder/src/uploadadapter';
+
+import editorConfig from './config';
 
 const initialData = `
 	<h2>Bilingual Personality Disorder</h2>
@@ -179,7 +180,7 @@ class Editor extends Component {
                 'trackChanges'
               ],
               cloudServices: {
-                ...this.props.configuration,
+                ...editorConfig,
                 documentId: this.props.roomId,
               },
               sidebar: {
