@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import CKEditor from '@ckeditor/ckeditor5-react';
-import parser from 'fast-xml-parser';
 import { Redirect } from '@reach/router';
 
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
@@ -70,22 +69,7 @@ class Editor extends Component {
   presenceListElementRef = React.createRef();
 
   componentDidMount() {
-    // const { navigate, roomId, user } = this.props;
-
-    // When the layout is ready you can switch the state and render the `<CKEditor />` component.
     this.setState({ isLayoutReady: true });
-
-    // console.log('user', user);
-    // const canEdit = Boolean(roomId && user);
-    // const canJoin = Boolean(!canEdit && roomId);
-    //
-    // if (!canEdit) {
-    //   if (canJoin) {
-    //     navigate(Routes.join(roomId));
-    //   } else {
-    //     navigate(Routes.create());
-    //   }
-    // }
   }
 
   componentWillUnmount() {
@@ -144,9 +128,6 @@ class Editor extends Component {
             onChange={(event, editor)=> {
               const data = editor.getData();
               console.log(data);
-              const parsed = parser.parse(data);
-              console.log(parsed);
-              // console.log({ event, editor });
             }}
             editor={ClassicEditor}
             config={{
