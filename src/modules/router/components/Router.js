@@ -1,12 +1,12 @@
 import React from 'react';
 import { Router as ReachRouter } from '@reach/router'
 
-import { withUser } from '../../../hoc';
+import { withUser } from 'hoc';
 
-import { Routes } from '../constants';
+import { Routes } from 'modules/router/constants';
 
-import { Editor } from '../../editor/components';
-import { CreateRoom, JoinRoom } from '../../rooms/components';
+import { Editor } from 'modules/editor/components';
+import { CreateRoom, JoinRoom } from 'modules/rooms/components';
 
 const EditorWithUser = withUser(Editor);
 

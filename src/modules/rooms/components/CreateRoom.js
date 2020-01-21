@@ -2,11 +2,11 @@ import React from 'react';
 import shortId from 'shortid';
 import { navigate } from '@reach/router';
 
-import { EventUtils, FnUtils } from '../../../utils';
+import { EventUtils, FnUtils } from 'utils';
 
-import { Routes } from '../../router/constants';
+import { SetUser } from 'components';
 
-import SetUser from './SetUser';
+import { Routes } from 'modules/router/constants';
 
 const CreateRoom = () => {
   const createRoom = React.useCallback(() => {

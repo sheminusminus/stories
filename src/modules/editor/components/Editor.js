@@ -26,7 +26,7 @@ import TrackChanges from '@ckeditor/ckeditor5-track-changes/src/trackchanges';
 import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline';
 import UploadAdapter from '@ckeditor/ckeditor5-adapter-ckfinder/src/uploadadapter';
 
-import { Routes } from '../../router/constants';
+import { Routes } from 'modules/router/constants';
 
 import editorConfig from './config';
 
