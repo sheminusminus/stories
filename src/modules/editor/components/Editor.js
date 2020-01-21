@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CKEditor from '@ckeditor/ckeditor5-react';
-import { navigate } from '@reach/router';
+import parser from 'fast-xml-parser';
+import { Redirect } from '@reach/router';
 
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
@@ -24,6 +25,8 @@ import Strikethrough from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
 import TrackChanges from '@ckeditor/ckeditor5-track-changes/src/trackchanges';
 import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline';
 import UploadAdapter from '@ckeditor/ckeditor5-adapter-ckfinder/src/uploadadapter';
+
+import { Routes } from '../../router/constants';
 
 import editorConfig from './config';
 
@@ -67,13 +70,22 @@ class Editor extends Component {
   presenceListElementRef = React.createRef();
 
   componentDidMount() {
+    // const { navigate, roomId, user } = this.props;
+
     // When the layout is ready you can switch the state and render the `<CKEditor />` component.
     this.setState({ isLayoutReady: true });
-    const id = localStorage.getItem('user.id');
-    const name = localStorage.getItem('user.name');
-    if (!id || !name) {
-      navigate(`/editor/${this.props.roomId}/join`);
-    }
+
+    // console.log('user', user);
+    // const canEdit = Boolean(roomId && user);
+    // const canJoin = Boolean(!canEdit && roomId);
+    //
+    // if (!canEdit) {
+    //   if (canJoin) {
+    //     navigate(Routes.join(roomId));
+    //   } else {
+    //     navigate(Routes.create());
+    //   }
+    // }
   }
 
   componentWillUnmount() {
@@ -130,7 +142,11 @@ class Editor extends Component {
               this.refreshDisplayMode(editor);
             }}
             onChange={(event, editor)=> {
-              console.log({ event, editor });
+              const data = editor.getData();
+              console.log(data);
+              const parsed = parser.parse(data);
+              console.log(parsed);
+              // console.log({ event, editor });
             }}
             editor={ClassicEditor}
             config={{
@@ -158,19 +174,7 @@ class Editor extends Component {
                 UploadAdapter
               ],
               toolbar: [
-                'heading',
                 'fontfamily',
-                '|',
-                'bold',
-                'italic',
-                'underline',
-                'strikethrough',
-                'removeFormat',
-                '|',
-                'alignment',
-                '|',
-                'link',
-                'blockquote',
                 '|',
                 'undo',
                 'redo',
@@ -188,7 +192,8 @@ class Editor extends Component {
               },
               presenceList: {
                 container: this.presenceListElementRef.current
-              }
+              },
+              placeholder: 'Text...',
             }}
             data={initialData}
           />
@@ -199,6 +204,19 @@ class Editor extends Component {
   }
 
   render() {
+    const { roomId, user } = this.props;
+
+    const canEdit = Boolean(roomId && user);
+    const canJoin = Boolean(!canEdit && roomId);
+
+    if (!canEdit) {
+      if (canJoin) {
+        return <Redirect noThrow to={Routes.join(roomId)} />;
+      } else {
+        return <Redirect noThrow to={Routes.create()} />;
+      }
+    }
+
     return (
       <div className="editor-wrapper">
         <main>

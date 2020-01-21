@@ -1,7 +1,7 @@
 import React from 'react';
-import shortId from "shortid";
+import shortId from 'shortid';
 
-const SetUser = () => {
+const SetUser = (props) => {
   const [name, setName] = React.useState(localStorage.getItem('user.name') || '');
   const [id, setId] = React.useState(localStorage.getItem('user.id'));
 
@@ -20,6 +20,7 @@ const SetUser = () => {
         setName(value);
         localStorage.setItem('user.name', value);
       }}
+      {...props}
     />
   );
 };

@@ -2,22 +2,33 @@ import React from 'react';
 import shortId from 'shortid';
 import { navigate } from '@reach/router';
 
+import { EventUtils, FnUtils } from '../../../utils';
+
+import { Routes } from '../../router/constants';
+
 import SetUser from './SetUser';
 
 const CreateRoom = () => {
   const createRoom = React.useCallback(() => {
     const roomId = shortId.generate();
+
     localStorage.setItem('room.id', roomId);
+
     const id = localStorage.getItem('user.id');
     const name = localStorage.getItem('user.name');
+
     if (id && name) {
-      navigate(`/editor/${roomId}`);
+      navigate(Routes.edit(roomId));
     }
   }, []);
 
   return (
     <div>
-      <SetUser />
+      <SetUser
+        onKeyPress={(evt) => {
+          FnUtils.callIf(EventUtils.isPressedEnter(evt), createRoom);
+        }}
+      />
       <button type="button" onClick={createRoom}>
         Create Room
       </button>

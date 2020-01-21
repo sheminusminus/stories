@@ -9,7 +9,7 @@ export default {
 
     if (!userId) {
       userId = shortId.generate();
-      localStorage.setItem('userId', userId);
+      localStorage.setItem('user.id', userId);
     }
 
     const response = await fetch(url, {
