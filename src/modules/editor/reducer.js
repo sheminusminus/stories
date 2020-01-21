@@ -1,6 +1,7 @@
 import * as constants from './constants';
 
 const initialState = {
+  activeParagraph: 0,
   text: [],
 };
 
@@ -13,7 +14,7 @@ export const reducer = (state = initialState, action = {}) => {
     case constants.CHANGE_TEXT:
       return {
         ...state,
-        text: payload.text,
+        text: [...state.text.slice(0, payload.index), payload.text, ...state.text.slice(payload.index + 1)],
       };
 
     default:

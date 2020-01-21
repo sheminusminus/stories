@@ -5,10 +5,10 @@ import { withUser } from 'hoc';
 
 import { Routes } from 'modules/router/constants';
 
-import { Editor } from 'modules/editor/components';
+import { StoryEditor } from 'modules/editor/components';
 import { CreateRoom, JoinRoom } from 'modules/rooms/components';
 
-const EditorWithUser = withUser(Editor);
+const EditorWithUser = withUser(StoryEditor);
 
 const Router = () => (
   <ReachRouter>
